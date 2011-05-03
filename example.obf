@@ -1,0 +1,4041 @@
+=Header=:
+    encoding: utf-8  # of this file
+    default units: sec
+    format: OBF v0.1    # merely informative
+    
+    preprocess:  one_indexed    # parser directives (here None)
+    program: PsychoPy2  # program used to create the data file
+    version: 1.64.00    # string
+    
+=Session=:
+    experiment:
+        name: my_script.py  # == the name of the script used to generate this data file
+        authors:  # string or list of strings; empty (as it is here) will parse as 'None'
+        sha1.hex: 044db3cbb2b27a09ce6bbb2a1d9988a5e4cc1571
+            # sha1 (hex-encoded) digest of my_script.py
+        script.base64:
+            # a base64-encoded copy of my_script.py, stashed here in the data file
+    session_start.utime: 1303844359.088219  # unix time = date + time
+    date: 2011-04-26    # redundant but nice to have human-readable too
+    time: 09:19.45.230
+    computer: scan-mac03
+    scanner:
+        TR.sec: 2.000  # float
+        scanner: MRRC timtrioa  # string
+    random_seed: 1303844359
+
+=Subject=:
+    code: tr1234  # string, multiple subject codes are possible, just use YAML list syntax
+    sex: male
+    age: 23
+    group: A
+    consenter: JRG # person administering informed consent
+    tester: JRG # person who administered the tasks, often same as consenter
+
+    
+
+trial.0 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.1 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.2 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.3 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.4 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.5 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.6 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.7 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.8 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.9 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.10 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.11 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.12 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.13 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.14 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.15 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.16 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.17 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.18 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.19 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.20 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.21 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.22 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.23 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.24 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.25 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.26 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.27 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.28 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.29 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.30 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.31 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.32 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.33 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.34 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.35 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.36 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.37 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.38 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.39 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.40 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.41 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.42 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.43 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.44 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.45 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.46 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.47 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.48 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.49 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.50 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.51 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.52 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.53 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.54 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.55 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.56 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.57 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.58 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.59 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.60 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.61 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.62 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.63 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.64 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.65 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.66 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.67 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.68 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.69 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.70 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.71 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.72 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.73 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.74 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.75 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.76 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.77 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.78 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.79 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.80 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.81 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.82 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.83 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.84 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.85 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.86 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.87 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.88 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.89 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.90 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.91 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.92 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.93 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.94 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.95 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.96 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.97 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.98 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.99 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.100 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+
+=Footer=:
+    exit_status: normal  # or whatever; if expected something but its missing, that's informative
+    session_end.utime: 1303998240.246597  # allows check on overall session length
+    
+trial.101 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.102 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.103 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.104 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.105 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.106 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.107 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.108 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.109 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.110 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.111 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.112 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.113 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.114 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.115 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.116 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.117 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.118 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.119 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.120 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.121 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.122 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.123 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.124 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.125 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.126 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.127 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.128 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.129 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.130 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.131 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.132 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.133 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.134 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.135 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.136 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.137 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.138 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.139 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.140 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.141 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.142 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.143 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.144 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.145 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.146 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.147 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.148 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.149 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.150 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.151 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.152 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.153 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.154 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.155 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.156 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.157 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.158 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.159 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.160 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.161 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.162 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.163 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.164 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.165 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.166 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.167 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.168 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.169 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.170 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.171 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.172 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.173 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.174 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.175 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.176 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.177 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.178 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.179 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.180 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.181 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.182 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.183 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.184 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.185 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.186 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.187 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.188 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.189 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.190 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.191 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.192 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.193 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.194 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.195 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.196 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.197 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.198 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.199 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.200 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.201 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.202 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.203 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.204 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.205 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.206 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.207 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.208 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.209 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.210 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.211 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.212 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.213 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.214 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.215 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.216 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.217 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.218 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.219 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.220 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.221 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.222 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.223 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.224 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.225 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.226 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.227 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.228 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.229 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.230 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.231 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.232 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.233 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.234 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.235 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.236 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.237 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.238 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.239 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.240 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.241 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.242 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.243 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.244 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.245 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.246 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.247 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.248 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.249 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.250 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.251 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.252 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.253 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.254 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.255 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.256 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.257 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.258 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.259 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.260 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.261 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.262 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.263 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.264 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.265 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.266 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.267 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.268 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.269 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.270 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.271 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.272 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.273 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.274 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.275 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.276 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.277 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.278 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.279 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.280 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.281 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.282 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.283 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.284 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.285 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.286 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.287 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.288 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.289 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.290 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.291 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.292 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.293 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.294 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.295 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.296 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.297 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.298 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.299 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.300 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.301 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.302 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.303 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.304 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.305 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.306 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.307 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.308 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.309 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.310 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.311 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.312 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.313 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.314 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.315 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.316 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.317 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.318 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.319 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.320 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.321 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.322 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.323 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.324 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.325 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.326 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.327 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.328 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.329 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.330 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.331 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.332 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.333 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.334 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.335 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.336 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.337 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.338 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.339 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.340 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.341 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.342 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.343 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.344 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.345 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.346 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.347 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.348 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.349 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.350 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.351 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.352 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.353 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.354 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.355 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.356 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.357 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.358 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.359 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.360 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.361 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.362 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.363 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.364 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.365 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.366 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.367 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.368 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.369 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.370 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.371 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.372 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.373 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.374 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.375 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.376 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.377 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.378 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.379 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.380 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.381 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.382 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.383 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.384 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.385 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.386 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.387 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.388 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.389 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.390 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.391 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.392 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.393 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.394 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.395 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.396 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.397 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.398 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.399 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.400 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.401 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.402 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.403 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.404 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.405 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.406 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.407 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.408 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.409 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.410 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.411 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.412 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.413 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.414 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.415 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.416 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.417 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.418 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.419 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.420 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.421 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.422 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.423 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.424 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.425 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.426 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.427 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.428 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.429 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.430 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.431 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.432 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.433 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.434 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.435 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.436 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.437 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.438 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.439 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.440 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.441 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.442 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.443 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.444 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.445 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.446 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.447 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.448 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.449 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.450 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.451 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.452 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.453 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.454 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.455 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.456 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.457 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.458 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.459 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.460 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.461 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.462 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.463 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.464 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.465 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.466 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.467 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.468 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.469 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.470 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.471 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.472 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.473 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.474 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.475 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.476 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.477 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.478 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.479 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.480 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.481 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.482 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.483 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.484 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.485 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.486 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.487 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.488 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.489 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.490 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.491 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.492 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.493 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.494 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.495 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.496 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.497 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.498 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.499 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.500 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.501 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.502 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.503 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.504 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.505 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.506 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.507 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.508 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.509 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.510 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.511 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.512 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.513 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.514 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.515 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.516 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.517 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.518 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.519 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.520 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.521 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.522 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.523 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.524 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.525 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.526 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.527 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.528 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.529 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.530 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.531 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.532 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.533 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.534 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.535 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.536 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.537 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.538 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.539 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.540 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.541 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.542 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.543 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.544 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.545 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.546 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.547 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.548 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.549 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.550 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.551 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.552 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.553 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.554 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.555 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.556 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.557 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.558 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.559 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.560 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.561 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.562 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.563 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.564 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.565 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.566 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.567 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.568 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.569 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.570 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.571 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.572 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.573 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.574 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.575 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.576 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.577 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.578 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.579 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.580 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.581 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.582 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.583 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.584 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.585 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.586 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.587 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.588 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.589 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.590 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.591 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.592 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.593 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.594 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.595 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.596 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.597 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.598 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.599 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.600 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.601 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.602 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.603 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.604 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.605 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.606 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.607 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.608 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.609 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.610 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.611 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.612 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.613 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.614 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.615 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.616 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.617 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.618 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.619 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.620 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.621 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.622 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.623 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.624 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.625 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.626 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.627 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.628 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.629 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.630 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.631 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.632 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.633 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.634 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.635 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.636 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.637 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.638 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.639 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.640 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.641 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.642 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.643 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.644 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.645 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.646 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.647 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.648 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.649 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.650 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.651 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.652 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.653 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.654 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.655 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.656 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.657 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.658 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.659 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.660 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.661 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.662 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.663 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.664 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.665 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.666 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.667 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.668 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.669 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.670 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.671 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.672 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.673 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.674 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.675 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.676 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.677 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.678 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.679 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.680 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.681 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.682 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.683 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.684 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.685 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.686 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.687 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.688 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.689 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.690 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.691 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.692 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.693 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.694 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.695 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.696 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.697 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.698 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.699 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.700 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.701 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.702 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.703 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.704 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.705 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.706 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.707 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.708 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.709 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.710 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.711 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.712 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.713 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.714 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.715 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.716 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.717 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.718 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.719 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.720 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.721 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.722 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.723 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.724 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.725 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.726 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.727 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.728 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.729 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.730 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.731 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.732 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.733 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.734 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.735 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.736 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.737 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.738 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.739 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.740 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.741 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.742 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.743 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.744 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.745 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.746 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.747 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.748 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.749 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.750 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.751 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.752 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.753 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.754 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.755 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.756 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.757 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.758 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.759 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.760 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.761 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.762 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.763 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.764 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.765 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.766 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.767 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.768 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.769 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.770 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.771 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.772 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.773 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.774 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.775 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.776 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.777 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.778 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.779 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.780 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.781 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.782 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.783 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.784 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.785 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.786 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.787 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.788 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.789 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.790 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.791 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.792 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.793 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.794 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.795 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.796 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.797 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.798 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.799 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.800 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.801 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.802 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.803 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.804 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.805 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.806 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.807 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.808 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.809 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.810 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.811 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.812 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.813 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.814 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.815 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.816 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.817 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.818 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.819 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.820 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.821 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.822 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.823 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.824 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.825 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.826 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.827 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.828 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.829 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.830 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.831 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.832 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.833 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.834 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.835 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.836 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.837 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.838 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.839 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.840 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.841 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.842 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.843 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.844 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.845 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.846 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.847 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.848 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.849 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.850 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.851 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.852 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.853 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.854 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.855 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.856 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.857 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.858 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.859 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.860 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.861 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.862 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.863 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.864 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.865 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.866 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.867 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.868 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.869 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.870 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.871 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.872 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.873 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.874 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.875 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.876 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.877 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.878 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.879 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.880 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.881 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.882 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.883 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.884 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.885 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.886 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.887 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.888 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.889 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.890 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.891 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.892 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.893 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.894 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.895 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.896 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.897 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.898 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.899 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.900 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.901 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.902 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.903 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.904 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.905 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.906 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.907 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.908 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.909 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.910 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.911 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.912 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.913 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.914 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.915 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.916 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.917 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.918 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.919 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.920 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.921 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.922 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.923 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.924 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.925 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.926 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.927 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.928 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.929 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.930 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.931 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.932 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.933 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.934 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.935 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.936 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.937 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.938 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.939 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.940 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.941 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.942 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.943 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.944 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.945 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.946 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.947 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.948 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.949 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.950 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.951 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.952 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.953 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.954 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.955 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.956 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.957 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.958 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.959 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.960 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.961 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.962 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.963 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.964 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.965 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.966 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.967 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.968 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.969 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.970 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.971 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.972 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.973 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.974 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.975 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.976 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.977 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.978 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.979 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.980 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.981 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.982 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.983 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.984 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.985 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.986 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.987 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.988 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.989 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.990 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.991 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.992 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.993 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.994 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.995 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.996 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.997 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.998 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    
+trial.999 + text.red + color.blue:
+    response: blue
+    rt.ms: 765
+    

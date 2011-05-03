@@ -1,0 +1,354 @@
+---
+== Open Behavioral-data Format (OBF) ==:
+    Authors:
+        - Jeremy R. Gray
+        - Jonathan Peirce
+        - and whoever contributes
+    Copyright:
+        - (c) 2011 Jeremy R. Gray
+        - Distributed under the terms of the CC BY SA 3.0 license
+        - http://creativecommons.org/licenses/by-sa/3.0/
+    Contact: Send suggestions or queries to jrgray@gmail.com
+    Version:
+        - v0.2 (May 2011)
+        - The spec is likely to evolve a lot in the near future; backwards
+          compatibility cannot be assured.
+    
+    1. Motivation for OBF: |
+        OBF is intended to facilitate working with data from virtually any 
+        situation in which humans do a computerized task.
+        
+        The main motivation for a format is to increase software interoperability. 
+        Given a standard, writing code to work with data should be 
+        easier and more widely useful, e.g., to prepare it prior to statistical
+        analysis. Another motivation is to convey "best practices", and make them
+        easier to share and adopt; for this reason, it is an "open" format.
+        
+        The design-aims are to be:
+        1) readable by humans, 
+        2) easy for diverse programs to import and process
+        3) structured yet flexible, and
+        4) sufficiently feature-rich to be a complete record of a given
+        testing session, suitable for archival purposes.
+        
+        OBF is designed for behavioral data. Being based on flat-text,
+        it is probably not well-suited for large data sets, such as EEG. It permits
+        that kind of use, but is probably inefficient for that purpose. 
+        
+    2. Implementation: |
+        
+        The logical structure is quite simple: An OBF file consists (almost exclusively) of 
+        "key: value" pairs. These can appear in any order, and be used to reconstruct a data-set, whether
+        singleton trials, loops of trials, nested loops (arbitrarily deep), associative arrays,
+        or a combination.
+        
+        The values can be quite complex, allowing (hopefully) for virtually any data type. 
+        For example, multi-line strings and lists of items within a given trial
+        are straightforward. A copy of the experiment script used to generate
+        a data file can itself be stored in the data file by using base64 encoding.
+        Moreover, the built-in feature for explict labeling of units can also be used to
+        specify an encoding (such as hex or base64), meaning that there is little
+        ambiguity when used for archival purposes. Thus effectively any digital data
+        can be contained an OBF file; other formats will be more efficient for
+        particular uses.
+        
+        Keys must be given entirely on one line, are case-sensitive, and cannot have
+        leading white-space. In contrast, values can vary greatly, from being single
+        items to complex data structures spanning many lines.
+        
+        2.1. Keys.
+        A key is the stuff that appears before a colon (actually colon-space) in a
+        key: value pair.
+        
+        Keys must be unique. If the auto_index option is requested, some non-unique keys
+        can be converted into unique ones, using the order within the file (which
+        is an implicit source of uniqueness) to differentiate them.
+        
+        There are three types of keys: simple, complex, or special. 
+        
+        2.1.1. Simple keys.
+            Simple keys are for indicating scalars: single values. Example:
+                consented: y
+            which will be parsed as
+                data['consented'] = 'y'
+            So 'consented' is the key, and it refers exclusively to 'y' (its value).
+            In OBF, simple keys are also legal variable names, i.e., alphanumeric+'_', 
+            starting with a letter or underscore (not a number).
+        
+        2.1.2. Complex keys.
+            Complex keys indicate loops (vectors, arrays), and can reconstruct
+            them. If a key contains a dot or plus sign (or equivalently, a comma),
+            its a complex key. (These characters are not typically allowed in variable 
+            names in many languages, which is useful.) Examples:
+                loopA.001:
+            So while the key is 'loopA.001', the name of the variable is 'loopA', and
+            it refers to an entire sequence (list, array, ...).
+                outerLoop.001+innerLoop.004:
+                outerLoop.001 + innerLoop.004 :
+                outerLoop.001, innerLoop.004:
+            The last three examples differ only cosmetically, they are parsed identically.
+            (The colon is not part of the key, its just to show where the colon goes
+            in a complex key.)
+            
+            Dot ('.'):
+            A dot means to interpret the key as consisting of "label.index", where:
+            - label must be a legal variable name
+            - index is either entirely digits or is legal as a variable name
+                indices are not part of the name.
+                all digits:
+                    Indicates the index number of an item within a sequence, i.e.,
+                    the presense of an integer modifier means the label refers to a
+                    sequence (= list, vector, array).
+                    The sequence can have gaps, and start at any value. But an OBF
+                    parser will fill flag the rest as being missing values (None).
+                legal as a variable name:
+                    Indicates the key of a dict (= associative array, hash, etc).
+                    
+            Plus ('+'):
+            A plus is used to indicate items in nested loops, to join key parts:
+                label1.modifier + label2.modifer
+            or multiple times (although maybe there are language-specific issues?):
+                label1.modifier + label2.modifer + label3.modifier + label4.modifer
+            For readability, '+' is fully equivalent to ' + ', and a comma (',') is
+            treated as equivalent to a '+'.; i.e., white-space around
+            a '+' is completely ignored. For keys, a modifier is either a sequence
+            index (integer) or a string.
+            
+            They can be mixed within
+            a file, although its probably better to be consistent within a file.
+        
+        2.1.3. Special keys
+            A key with leading and trailing equals signs ('=') indicates
+            a special key. The five (or six) special keys are:
+                =Header=
+                =Session=
+                =Subject=  or  =Participant=
+                =Comment=
+                =Footer=
+            The idea is to avoid name collisions: people writing experiments might
+            name a variable "Session" and save it in their data file. But '=' is quite
+            unlikely to be part of a variable name. Plus it looks kind of spiffy.
+            
+            The one way that special keys are actually special is that they are never
+            affected by keys_upper and keys_lower parser directives; they are always
+            case-sensitive.
+            
+        2.2. Values.
+        This section could get a lot of elaboration. For now, my bias is to have 
+        informal conventions, and not try to nail things down. Different scientific
+        communities might have different existing conventions or preferences.
+        Having flexibility respects that.
+        
+        Some things need definition:
+        OBF consists of key: value pairs. There can be keys within a value, if the
+        value is itself a dict or contains a dict. All such keys are called subkeys
+        to try to be clear.
+        Units.
+        - A dot in a subkey is used to indicate units; units are not part of the
+        subkey. Example:
+            =Session=:
+                start.utime: 1303844359
+          will parse as
+            data['=Session=']['start'] = 1303844359
+          The units, utime, is retained as a new key: value pair
+            data['=Session=']['start.units'] = 'utime'
+          So if there's a key X, X.units refers to the units for X
+          
+        - The default units for time is seconds; adding .sec is redundant, but allowed.
+          
+          Units are not case sensitive.
+          
+        - Subkeys are not interpreted to reconstruct lists or loops. Subkeys can
+          contain lists; just use YAML list syntax. (Example: lots_of_mouse_clicks)
+        
+        - Repeated things, like trials, will generally contain the same parameters and
+          hence same internal structure (just different values). Non-responses
+          or otherwise missing data could potentially lead to different structure, or
+          would require more effort to ensure the same structure. So it seems best
+          to require that a parser should discover missing values.
+          
+        - Onset is time relative to the start of the script
+        
+        - Data can be written into the file in any order, without the need to follow
+          chronological order.
+        
+        - Booleans are case insensitive: [True | yes , False | no]. note
+          that 0,1 will parsed as being type int.
+    
+    3. Parsing options: |
+        A few options are available to change how things are parsed. These are placed
+        in the =Header= section, under 'preprocess:'. (See example below.)
+        
+        Options consist of case-insensitive strings,
+        either a single long string separated by commas, or a list of strings.
+        An OBF parser must raise an error if incompatible directives are requested.
+        
+        Available options are:
+            strict | warn | quiet
+            one_indexed | zero_indexed
+            auto_index
+            keys_lower | keys_upper
+        
+        3.1. Strict mode is the default, and 'strict' is just to allow people to be
+        explicit about that. 'warn' detects conditions that would de denied under strict.
+        'quiet' aims to be as quiet as possible, but should still fail if there's
+        ambiguity in the data source.
+        
+        3.2. Sequences are considered to start at index 1. if zero_indexed is requested
+        and there's no explicit 0th element given for a list, that element will be
+        considered to be missing / non-response. This depends on the experimenter's
+        implementation (and not the language the experimenter is using).
+        
+        3.3. auto_index is motivated by the following considerations. Allowing 
+        repeated keys like trial, trial, trial, ... would make life easier in some 
+        ways. And in some sense, the keys are unique based on the /order of appearance/
+        in the .obf file. If auto_index is requested, duplicate keys are replaced 
+        with unique keys by appending an integer index to the key. So
+            trial: 1
+            trial: 2
+            trial: 3
+        means (and internally becomes):
+            trial.1: 1
+            trial.2: 2
+            trial.3: 3
+        The keys are unique once the implicit order is made explicit.
+        
+        For single loops (as in the example above), auto_index can safely do its
+        things (on the assumption that the data were written out in the proper order.
+        It is probably ok doing the right-most (fastest changing) loop.
+        It cannot be used for other loops.
+        
+        Recommendation: Either don't use it, or use it only if also recording trial
+        onset times (as an explicit record of the temporal order).
+        
+        3.4. keys_lower | keys_upper:  pre-processing directive to flatten all 
+        keys into all-lower-case, or all-uppper-case. 
+        
+    4. Other stuff: |
+        4.1. YAML basics, see http://www.yaml.org/
+        A YAML document is supposed to start with 3 hyphens --- and end with three dots 
+        but things appear to work fine without them.
+        Keys must be flush against the left edge, no white space.
+        Indentation levels are 4 spaces per level.
+        key: value pairs require colon-space (not just colon)
+        
+        Data type is inferred and imposed auto-magically by YAML. In python, '2011-04-27' 
+        becomes an object of <type 'date-time'>. But type conversion can do
+        nonobvious things, like "date: 2011_04_26" becomes 20110426 <type 'int'>.
+        
+        4.2. Commenting
+        YAML allows for whole-line or in-line comments, using the hash (#) character.
+        In addition, the '=Comment=' key can be used to create a multi-line comment
+        that will be treated as being part of the
+        data record. Other sections that have the =Stuff= will be ignored (and not
+        treated as being part of the data record).
+        
+        4.3. Key sorting order
+        Ideally keys should sort to the same order whether being sorted alphabetically or 
+        numerically, which is easy to accomplish using .zfill() (in python).
+        
+        4.4. missing values
+        Not sure what to do here. In python, the YAML parser returns 'None' if
+        there's a key but no value. What YAML parsers do in different languages
+        should probably figure into any decision about what to do, so that there
+        is an OBF way to do things, not subject to the whims of YAML parsers.
+        Personally, I like '__NONE__' quite a lot; its nice and visible in
+        output, and string type tends to cause errors in math contexts (= desirable).
+        
+        4.5. Key conflicts and ambiguities.
+        4.5.1. If the same key is re-used, all but the last one will be lost, unless the
+        auto_index option is used.
+        
+        4.5.2. If there's a key indicating a single value, like 'trial', it could
+        happen that a list of items is also
+        defined, 'trial.1', 'trial.2', ... The keys are unique in the source, but
+        parse to an ambiguous situation for OBF. Maybe 'trial' could be converted into
+        'trial.scalar', the idea being that .scalar is implicitly the type. But
+        there's still the name-space conflict.
+        
+        4.5.3. In complex keys, it can happen that something could be referred to
+        by name in one place as a dict (string index) and in another as a list
+        list (integer index). This is inherently ambiguous; there's no safe way to guess
+        which one is correct. So its a fatal error.
+        
+    5. Sundry spec details: |
+        5.1. YAML means YAML version 1.2, in this document. 
+        
+        5.2. Text encoding is utf-8.
+        
+        5.3. Order of sections:
+        The order of the key: value pairs is completely arbitrary. For readability,
+        a conceptually reasonable order is:
+            =Header=
+            =Session=
+            =Subject=  or equivalently  =Participant=
+            <all 'key: value' pairs go in here>
+            =Footer=
+        The order of items within a value might matter.
+        
+        5.4. Sections
+        There should be exactly one =Header=, =Session=, and =Footer= section, and
+        in the recommended order (above). Allowing for multiple subjects might be good.
+        If =Footer= is missing (eg, because the experiment quit before a footer was
+        written out), a warning should be raised but the file must be parsed anyway.
+        
+        Allowing multiple subjects within a given data file could be useful,
+        e.g., in dyad or group studies. To have unique keys something like =Subject.1=,
+        =Subject.2=, ... might be the way to go, making a list of subjects.
+        
+    6. Some questions I have (unresolved issues): |
+        6.1. It might be useful to have a way to refer to other trials,
+        e.g., to indicate that the onset of a current trial is relative to another
+        one. There may be ways to solve or sidestep this issue for onsets, but
+        still there could be other situations in which some notation would be handy.
+        It could probably be done, based on the fact that keys are unique. 
+        
+        (For onsets, I think the best practice is to have a single point in time 
+        that all other events are relative to, such as the time the script started.
+        If you want onsets, its clearest and often most precise to have a single 
+        reference point that is used for the whole run.)
+        
+        6.2. Should there be a more specified way to support links to external files,
+        such as EEG, sound, video, psychophysiology, or eye-tracking data?
+        Its trivial to store a file name as a string, but there could be support
+        for things like file-creation time, mod-time, and sha1 digest. These could
+        help reduce ambiguities in archival uses.
+        
+    7. Notes for developers on adding OBF support to their stimulus presentation software: |
+        An OBF document consists almost entirely of key: value pairs. YAML
+        takes care of formatting the value, so the only real work is constructing the
+        keys.
+        7.1. 
+            I'll add some things here. Meanwhile, you can play with things like:
+            testing = [1,2,3]
+            output = 'testing: ' + yaml.dump(m)
+            file = open('tmp.obf', 'wb')
+            file.write(output)
+            file.close()
+            
+            data = yaml.load(open('tmp.obf'))
+            print data['m']
+            
+            yaml.dump() formats OBF values for you, by converting your data into
+            YAML syntax (which OBF uses). You still have to construct an
+            appropriate key (namely 'testing: ', in the above case). Note that the colon
+            must have a space after it.
+            
+            To include units information, you need to arrange to have "var: value"
+            and "var.units: ms". Using yaml.dump will not handle adding units using
+            the short-hand notation (var.ms: value). 
+            
+        7.2. Functions / methods you'll likely want:
+        - make_header(), make_session_subject(), make_footer()
+        - make_primary_key() - given loop info or trial name
+        - make_primary_value() - convert values into properly indented strings,
+            YAML syntax, for which proper indentation is essential.
+        
+        After the time-critical part of each trial (e.g., in the ITI), you could
+        call make_primary_key() and make_primary_value(), and append those strings
+        to the data file (whether on disk or in memory). This would give chronological
+        output.
+        
+        But you could keep everything in memory, and loop over all your conditions
+        at the end, writing things into a file in whatever order you like.
+...
