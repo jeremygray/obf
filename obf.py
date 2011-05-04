@@ -2,10 +2,10 @@
 
 # obf.py:  A python-based parser for Open Behavioral [data] Format (OBF).
 # Copyright 2011 by Jeremy R. Gray, jrgray@gmail.com
-# Distributed under the terms of the GNU General Public License (GPL).
+# Distributed under the terms of the GNU General Public License (GPL), v3.
 
-# Note that OBF is a separate logical entity from code that implements a parser
-# or emitter
+# Note that OBF is a separate logical entity from code that implements a 
+# parser or emitter; see OBF_spec.txt
 
 
 __version__ = '0.4.00' # of the parser, not OBF
@@ -15,10 +15,8 @@ import copy
 import re
 import time
 
-import StringIO # for tests
 
-
-# OBF Constants:
+# Parser constants:
 # Special section keys, case-sensitive:
 _HEADER = '=Header='
 _SESSION = '=Session='
@@ -29,21 +27,23 @@ _NOTES = '=Notes='
 _FOOTER = '=Footer='
 _SPECIAL = [_HEADER, _SESSION, _SUBJECT, _PARTICIPANT, _COMMENT, _NOTES, _FOOTER]
 
-# Parser directives: Not case-sensitive but must be lower case here, no whitespace:
-_ONE_INDEXED = 'one_indexed' # first list element is referenced by [1]
-_ZERO_INDEXED = 'zero_indexed' # first list element is referenced by [0]
-_AUTO_INDEX = 'auto_index' # add integer labels to redundant keys
+# Parser directives, not case-sensitive:
 _STRICT = 'strict' # disallow (generate error, nullify data)
 _WARN = 'warn' # permissive (generate a warning)
-_NOT_STRICT = 'not_strict' # permissive
+_NOT_STRICT = 'not_strict' # permissive, and quiet
 _KEYS_LOWER = 'keys_lower' # convert keys to all upper-case
 _KEYS_UPPER = 'keys_upper' # convert keys to all lower-case
-_PREPROC = [_STRICT, _WARN, _NOT_STRICT, _KEYS_LOWER, _KEYS_UPPER, _ONE_INDEXED,
-            _ZERO_INDEXED, _AUTO_INDEX]
+_ONE_INDEXED = 'one_indexed' # first list element is [1], default
+_ZERO_INDEXED = 'zero_indexed' # first list element is [0]
+_AUTO_INDEX = 'auto_index' # add integer labels to redundant keys
+_PREPROC = [_STRICT, _WARN, _NOT_STRICT,
+            _KEYS_LOWER, _KEYS_UPPER,
+            _ONE_INDEXED, _ZERO_INDEXED, _AUTO_INDEX]
+_PREPROC = map(lambda x: x.lower(), _PREPROC)
 
-# Units: Not case-sensitive but must be lower case here:
-_UNITS = 'units'
-_KNOWN_UNITS = ['ms', 'sec', 'utime', # time: milliseconds, seconds, unix-time (sec)
+# Units, not case-sensitive:
+_UNITS_LABEL = 'units'
+_UNITS = ['ms', 'sec', 'utime', # time: milliseconds, seconds, unix-time (sec)
                'cm',  # distance: centimeters
                'deg', # degrees (eg, visual angle)
                'hz',  # Hertz
@@ -55,7 +55,6 @@ _KNOWN_UNITS = ['ms', 'sec', 'utime', # time: milliseconds, seconds, unix-time (
                'tf', 'yn', 'bool', # True-False, yes-no, boolean
                'hex', 'base64', # hexadecimal (base 16), base 64 (text encodings)
                #'utf8', # utf-8 (encoding)
-               _UNITS
                ]
 
 # Regular expressions:
@@ -65,58 +64,49 @@ _good_key_re = re.compile(r"^[a-z_][a-z0-9.+,\s_]*:\s+", re.I) # the line contai
 _almost_good_key_re = re.compile(r"^[a-z_][a-z0-9.+,\s_]*:[^\s]+", re.I) # lacks space after colon
 _two_dots_re = re.compile(r"\..*\.")  # two '.' anywhere
 _special_key_re = re.compile(r"^=.+=$")  # string is '=' first and last, with something in between
-#_quoted_int_re = re.compile(r"^_\d+_$")  # string consists of digit(s) between underscores
+_label_dot_units_re = re.compile(r"^([a-zA-Z_][^.]*)\.(.+)$") # captures two groups, label, units
 
-_label_dot_units_re = re.compile(r"^([a-zA-Z_][^.]*)\.(.+)$")
 
 class OBF_Load(dict):
-    """Class for parsing a file-like data source; OBF text -> internal data.
+    """Class for parsing a file-like data source consisting of OBF text.
     
-    Parses from a data source (opened file, StringIO):
-    - self.data   <- data structure
-    - self.source <- repr of data source
-    - self.report <- conversion warning & error messages
-    - self.time   <- code timing profile
-    - self.prepro <- preprocessing that was applied
-    - self.yaml   <- yaml parser details
+    Parses from a data source having a .readlines() method (opened file, StringIO):
+    - self.data   <-- data structure
+    - self.source <-- repr of data source
+    - self.report <-- warning & error messages
+    - self.time   <-- code timing profile
+    - self.prepro <-- preprocessing requested
+    - self.yaml   <-- yaml parser details
     
     Notes:
-    - quote characters seem to mess with YAML parsing
-      to use '123' (string) as a key for a dict instead of as an integer, use _123_ -> ['123'] 
-      but then can't use _123_; maybe needs a preprocessing directive?
+    - quote characters seem to mess with YAML parsing. to use '123' (string) 
+      as a key for a dict (instead of as an integer), use _123_ -> ['123'] 
     
     Still needs:
     - better bad-key detection: get errors, but can be cryptic
-      _0_: 2  ->  '0' = 2?
-      single digit key ==  wonky TypeError in ignoreKeys
-      
-    - quoted int not working for OBF keys (only secondary keys)
     - more checking (only one =Session=, etc)
     - standardize .report[] messages --> warn, quiet, strict
     - provide usage examples
     - provide tests
     
-    Eventually add ways to create OBF documents:
-    - routines for creating different sections (i.e., conversion to OBF)
-    
     Someday think about:
     - YAML does not require --- and ...; maybe good to check if they are in source
       good to require them be written by any function that emits OBF
     """
-    def __init__(self, source, custom_actions={}, save_timing=False):
+    def __init__(self, source, conventions={}, timing=False, units=_UNITS):
         """
         """
-        # initialize timing profile:
+        # initialize timing profile (generate one even if not requested)
         self.time = []
         self.time.append(('start',time.time()))
         self.time.append(('obf-load_start',time.time()))
         
         dict.__init__(self) # at first a dict made sense, but things have evolved; unclear now
         self.source = str(source)  # save the name / repr of the source
-        
+        self.units = map(lambda x: x.lower(), units) # case-insensitive
         self.report = [] # container for warnings and other notes
         
-        # save info about the underlying YAML parser used for this OBF parsing:
+        # details of the YAML parser used for this OBF parsing:
         self.yaml = {}
         self.yaml['__name__'] = yaml.__name__
         self.yaml['__version__'] = yaml.__version__
@@ -134,7 +124,7 @@ class OBF_Load(dict):
         # check for good openers & closers, non-overlapping
         
         # for multiple documents per file, refactor moving data{dict} to data[0]{dict}
-        #self.data = []
+        #self.data = [] but also self.report, self.source, ...
         # loop:
         #     next_raw_text = chunk between first yaml_opener and first yaml_closer
         #     self.data.append() = ..
@@ -146,11 +136,11 @@ class OBF_Load(dict):
         # everything is 'key: value' pairs:
         self.parse_keys()
         
-        # merge custom key:actions into default, then parse all values
-        hot_keys = dict(_get_key_actions(), **custom_actions) 
-        self.parse_values(hot_keys)
+        # set conventions (hot_key: action pairings), then parse
+        merged_conv = dict(_get_default_conventions(), **conventions) 
+        self.process_values(merged_conv)
         
-        # self.adjust_indices()  # ?? should ONE_INDEXED delete the actual [0] indices?
+        # self.adjust_indices()  # if ONE_INDEXED alert about non-null [0] values?
         
         # reporting and strictness level:
         self.report = list(set(self.report))  # remove redundant
@@ -159,17 +149,17 @@ class OBF_Load(dict):
         if _NOT_STRICT in self.prepro:
             pass # remove 'ERROR' and 'WARNING' message from self.report
         
-        if not save_timing:
-            del self.time
-        else:
-            #  format the timing tuples:
+        if timing:
+            # format the timing tuples:
             self.time.append(('obf-load_end',time.time()))
             self.time[1:len(self.time)] = ["%7.3f = %s" %(self.time[i][1] - self.time[0][1],
                                                 self.time[i][0]) for i in range(1,len(self.time))]
             self.time.pop(0) # remove the initial reference point time-zero
-        
+        else:
+            del self.time
+            
     def __str__(self):
-        return '<data as OBF_Load()ed from '+self.source+'>'
+        return '<obf.OBF_Load() parsing of '+self.source+'>'
     def __repr__(self):
         return str(self)
     
@@ -294,7 +284,7 @@ class OBF_Load(dict):
         # filter regular keys:
         bad_keys = [k for k in obf_keys if _bad_key_re.search(k)]
         simple_keys = [k for k in obf_keys if _valid_var_re.match(k)]
-        complex_keys = obf_keys.difference(set(simple_keys))
+        complex_keys = obf_keys.difference(set(simple_keys)) # gets .units too, bad, refactor
         
         # expand keys for nested loops (list or dict)
         for key in complex_keys:
@@ -303,28 +293,28 @@ class OBF_Load(dict):
                 del self.data[k]
                 continue
             name, index = key.split('.',1)
-            if index.lower() == 'units':
+            # refactor: move units detection out of complex_key handling
+            if index.lower() == _UNITS_LABEL:
                 continue
-            if index.lower() in _KNOWN_UNITS:
-                if hasattr(self.data, name):
-                    self.report.append("OBF: ERROR '%s' has units '%s', but key conflicts with existing key" % (key, index.lower()))
+            # some obf_keys with a '.' might be key.units, rather than trial.index:
+            if index.lower() in self.units:
+                if hasattr(self.data, name): 
+                    self.report.append("OBF: ERROR: '%s' has units '%s', but key conflicts with existing key" % (key, index.lower()))
                 else:
-                    self.report.append("OBF: treating '%s' as %s with units %s" % (key, name, index.lower()))
+                    self.report.append("OBF: NOTE: treating '%s' as %s with units %s" % (key, name, index.lower()))
                     self.data[name] = copy.deepcopy(self.data[key])
-                    self.data[name+'.units'] = index
+                    self.data[name+'.'+_UNITS_LABEL] = index
                     del self.data[key]
                 continue
-            #if _quoted_int_re.match(index):
-            #    index = str(index.replace('_', ''))
             # parse each sub-item of the complex key: eg: name1.index1+name2.index2+...+nameN.indexN
             k2 = key # will nibble k2 down to nothing
             name_indices = [] # to contain (name, index) tuples
             while k2.find('+')>-1:
-                left_end, k2 = k2.split('+',1) # nibble away
+                left_end, k2 = k2.split('+',1) # nibble away left-most dimension
                 if left_end.find('.') == -1:
-                    raise AttributeError, "OBF: complex key '%s' is missing a '.'" % key
+                    self.report.append("OBF: ERROR: key '%s' is missing a '.'" % key)
                 if _two_dots_re.search(left_end):
-                    raise AttributeError, "OBF: complex key '%s' has too many '.'" % key
+                    self.report.append("OBF: ERROR: key '%s' has too many '.'" % key)
                 # build up list of parts, traverse it later
                 name_indices.append(self._get_name_index(left_end, key))
             # do the last one:
@@ -436,37 +426,44 @@ class OBF_Load(dict):
             s_data_build_string += '['+repr(index)+']'
         exec(s_data_build_string+'='+repr(datum))
         
-    def parse_values(self, hot_keys):
+    def process_values(self, conventions):
         """Inspect and process every value, descending recursively.
         
-        The "hot_keys" do the work. They consist of key: function pairs, as defined
-        by a merge of the defaults (from _get_key_actions) + custom hot_keys.
+        Keys can trigger further processing, based on conventions.
         """
+        hot_keys = conventions.keys() # unordered
         def walk_values(this_level):
-            """
-            1. trigger actions based on keys
-            2. remove .units '.ms' from key and make an extra key 'var.units: ms'
+            """trigger actions based on hot_keys; "walk" means descend recursively.
+            
+            Conventions consist of hot_key: action pairs, and are not formally part
+            of the OBF definition. Custom conventions can be defined and
+            passed to OBF_Load, as conventions={hot_key: function_reference, ...}.
+            
+            hot_keys are regular expressions, and must either be constants or include
+            the start ^ and end $ delimiters (i.e., must be constructed to match
+            the entire string exactly). See _get_default_conventions().
+            A re.match(hot_key_regex, this_key) triggers a function call. That call
+            returns a dict indicating what was done.
+            
+            The idea is that one and only one match should be allowed. It would be more
+            powerful to allow multiple matches; that would require also being able 
+            to specify the order in which matches should be attempted.
             """
             if type(this_level) == list:
                 for item in this_level: # or this_level[self.base-index:]?
                     if type(item) in [list, dict]:
                         walk_values(item)
-                    
             elif type(this_level) == dict:        
                 for key in this_level.keys():
                     status = None
-                    for regex in hot_keys.keys():
-                        # first match wins, not ordered
-                        if regex == key: # then regex is just a normal string
-                            status = hot_keys[regex](this_level, key, self)
-                            break
-                        elif regex[0] == '^' and regex[-1] == '$' and re.match(regex, key):
-                            status = hot_keys[regex](this_level, key, self)
+                    for regex in hot_keys:
+                        if regex == key or (regex[0] == '^' and regex[-1] == '$' and re.match(regex, key)):
+                            status = conventions[regex](this_level, key, self)
                             break
                     if status:
-                        for k in status:
+                        for k in status.keys():
+                            # if k == some-code: do something
                             if k == 'new_key': key = status['new_key']
-                            # if return-code: take-action[x]
                     if type(this_level[key]) in [list, dict]:
                         walk_values(this_level[key])
             else:
@@ -491,7 +488,7 @@ class OBF_Dump(object):
         pass
     def write(self):
         pass
-    def fluch(self):
+    def flush(self):
         pass
     def write_header(self):
         pass
@@ -501,7 +498,7 @@ class OBF_Dump(object):
         pass
     
     
-def _get_key_actions():
+def _get_default_conventions():
     """Returns a dict of default 'hot keys' = key + actions to be triggered.
     
     UNRESOLVED: being a dict is unordered, and it might be useful to know
@@ -535,12 +532,12 @@ def _get_key_actions():
         if match:
             new_key = match.group(1)
             units = match.group(2)
-            if units.lower() == _UNITS:
+            if units.lower() == _UNITS_LABEL:
                 return
-            if units.lower() in _KNOWN_UNITS:
+            if units.lower() in this_obj.units:
                 units = units.lower()
             this_dict[new_key] = copy.deepcopy(this_dict[this_key])
-            this_dict[new_key+'.units'] = units
+            this_dict[new_key+'.'+_UNITS_LABEL] = units
             del this_dict[this_key]
             return {'new_key': new_key}
         else:
@@ -557,7 +554,7 @@ def _get_key_actions():
                 else:
                     this_obj.report.append("OBF: ERROR: mouse lacks (x,y) or pos[]")
     key_action_dict = {
-        # 'trigger': function_reference,
+        # regex 'trigger': function_reference,
         'random_seed': screen_random_seed,
         'mouse': screen_mouse,
         r"^_\d+_$": convert_digits_as_str,
@@ -579,7 +576,7 @@ def clear_default_actions():
     def _do_nothing(this_dict, this_key, this_obj):
         pass
     key_action_dict = {}
-    for key in _get_key_actions():
+    for key in _get_default_conventions():
         key_action_dict[key] = _do_nothing
     return key_action_dict
 
@@ -696,7 +693,7 @@ multiple_mouse_clicks:
         button: [left, left, middle, right, right]
         xx: [10, 20, 30, 40, 50]  
         y: [20, 30, 40, 50, 70]
-        RT.ms: [543, 1033, 3449, 5467, 6587] # units can be applied to the list 
+        RT.ms: [543, 1033, 3449, 5467, 6587] # a list tagged with units
         wheel_rel: [0, 0, 0, 0, 0]
         
 # Deeply nested loops & dicts are possible
@@ -712,18 +709,20 @@ trial.1 + text.red + color.blue:
 trial.2 + text.red + color.blue:
     response: blue
     rt.ms: 765
-# ...
+#
 #trial.999 + text.red + color.blue:
 #    response: blue
 #    rt.ms: 765
 
-# note that items [0..998] will be set to None -- their presence is implied by trial.999
+# note that items [0, 3-998] will be set to None -- their presence is implied by trial.999
 
 zz10.9:8 # illegal YAML syntax, but warn and correct (add a space) 
 zz10.units: ms
 
 zzz._1_:
     1111
+
+_1_:1
 
 =Footer=:
     exit_status: normal
@@ -733,6 +732,8 @@ zzz._1_:
 def test_OBF_Load():
     """Run tests.
     """
+    import StringIO 
+    
     data = OBF_Load(StringIO.StringIO(example1()))
     
     # test for expected parsing:
@@ -744,16 +745,28 @@ def test_OBF_Load():
     
     print 'all tests pass'
     
+    
 if __name__ == '__main__':
-    #data = OBF_Load(open('example.obf'), custom_actions=clear_default_actions())
-    data = OBF_Load(StringIO.StringIO(example1()),save_timing=True)
+    import StringIO 
+    import sys
+    
+    if len(sys.argv) > 1:
+        source = open(sys.argv[1])
+    else:
+        source = StringIO.StringIO(example1())
+    
+    t0 = time.time()
+    data = OBF_Load(source, timing=True)
+    t1 = time.time() - t0
     
     #print data.data['zzz'] # test _1_ -> '1'
     #print data.time
     
-    for k in data.data:
+    for k in sorted(data.data):
         print k, data.data[k]
     print data.report
-    #test_OBF_Load()
+    
+    for t in data.time:
+        print t
     
     

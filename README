@@ -1,0 +1,18 @@
+Open Behavioral-data Format (OBF) is intended as a precise yet flexible file format.
+It is intended for use in psychology and human neuroscience experiments to facilitate
+post-processing. The goals of OBF are for data files to be 1) readily intelligible by
+human readers; 2) suitable for automated analysis for being unambiguously structured,
+yet also highly flexible; 3) easy to implement in stimulus presentation programs;
+and 4) sufficiently detailed to be a complete record of a behavioral testing session,
+suitable for archival purposes. The main motivation for such a format is to encourage
+the development of software for automating some of the data management steps between
+data collection and statistical analysis, including formatting data for import into
+statistical packages, viewing and quality control, archiving, and sharing.
+
+This project also make available a parser, obf.py, that follow the OBF_spec yet also
+goes beyond it in several ways. OBF_spec does not constrain usage conventions,
+whereas the parser does so. Some default conventions are implemented, along with a
+mechanism for adding custom conventions (including over-riding the defaults).
+
+Examples:
+$ python obf.py example.obf
