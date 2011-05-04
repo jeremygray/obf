@@ -62,10 +62,10 @@ _valid_var_re = re.compile(r"^[a-zA-Z_][\w]*$")  # a string is a legal variable 
 _bad_key_re = re.compile(r"[^a-z0-9.+, _]", re.I)  # non-OBF character (for a key)
 _good_key_re = re.compile(r"^[a-z_][a-z0-9.+,\s_]*:\s+", re.I) # the line contains a good key
 _almost_good_key_re = re.compile(r"^[a-z_][a-z0-9.+,\s_]*:[^\s]+", re.I) # lacks space after colon
-_two_dots_re = re.compile(r"\..*\.")  # two '.' anywhere
-_special_key_re = re.compile(r"^=.+=$")  # string is '=' first and last, with something in between
+_two_dots_re = re.compile(r".*\..*\.")  # two '.' anywhere
+_looks_like_special_key_re = re.compile(r"^=.+=$")  # string is '=' first and last, with something in between
 _label_dot_units_re = re.compile(r"^([a-zA-Z_][^.]*)\.(.+)$") # captures two groups, label, units
-
+_numeric_re = re.compile(r"^\d+$")
 
 class OBF_Load(dict):
     """Class for parsing a file-like data source consisting of OBF text.
@@ -93,6 +93,12 @@ class OBF_Load(dict):
     - YAML does not require --- and ...; maybe good to check if they are in source
       likely useful for multiple data files per text source
     """
+    
+    # might be useful:
+    # libyaml from http://pyyaml.org/wiki/LibYAML
+    # I had build issues, no yaml.h, did not pursue; maybe this: http://pyyaml.org/ticket/70
+    # interesting: yaml.load(input, Loader=yaml.CLoader)
+
     def __init__(self, source, conventions={}, timing=False, units=_UNITS):
         """
         """
@@ -101,7 +107,7 @@ class OBF_Load(dict):
         self.time.append(('start',time.time()))
         self.time.append(('obf-load_start',time.time()))
         
-        dict.__init__(self) # at first a dict made sense, but things have evolved; unclear now
+        dict.__init__(self) # at first a dict made sense, but things have evolved
         self.source = str(source)  # save the name / repr of the source
         self.units = map(lambda x: x.lower(), units) # case-insensitive
         self.report = [] # container for warnings and other notes
@@ -120,18 +126,21 @@ class OBF_Load(dict):
         
         # here could search for --- <stuff> ..., and split into multiple sources
         #yaml_opener = [i for i, line in enumerate(raw_text) if line.startswith('---')]
+        #if len(yaml_opener) == 0:
+        #    yaml_opener = [-1]
         #yaml_closer = [i for i, line in enumerate(raw_text) if line.startswith('...')]
-        # check for good openers & closers, non-overlapping
-        
+        #if len(yaml_closer) == 0:
+        #    yaml_closer = [len(raw_text)]
+            
         # for multiple documents per file, refactor moving data{dict} to data[0]{dict}
         #self.data = [] but also self.report, self.source, ...
         # loop:
-        #     next_raw_text = chunk between first yaml_opener and first yaml_closer
+        #     text_chunk = raw_text[yaml_opener.pop(0)+1 : yaml_closer.pop(0)]
         #     self.data.append() = ..
         
         # look before leaping:
         self.initial_checks(raw_text)
-        self.data, self.prepro = self.preprocess(raw_text)
+        self.data, self.prepro = self.process_yaml(raw_text)
         
         # everything is 'key: value' pairs:
         self.parse_keys()
@@ -190,8 +199,10 @@ class OBF_Load(dict):
             self.report.append("OBF: WARNING: adding space after colon for key '%s'" % key)
             raw_text[i] = raw_text[i].replace(':', ': ')
         
-    def preprocess(self, raw_text):
-        '''text wrangling: find and apply preprocessing directives from =Header=
+    def process_yaml(self, raw_text):
+        '''text wrangling
+        find and apply preprocessing directives from =Header=
+        parse as YAML using yaml.safe_load()
         '''
         # only need to work with lines having keys
         key_lines = [(i, line) for i, line in enumerate(raw_text) if _good_key_re.match(line)]
@@ -272,30 +283,29 @@ class OBF_Load(dict):
         """
         inspect & process every key; expand valid keys as dimenions of self.data
         """
-        # get all keys that are not special 
+        t1 = time.time()
+        # treat =key= as comments if not in special keys:
         nonspecial_keys = set(self.data.keys()).difference(set(_SPECIAL))
-        
-        # some keys might look special but are not, so treat as comments:
-        ignore_keys = [k for k in nonspecial_keys if _special_key_re.match(k)]
+        ignore_keys = [k for k in nonspecial_keys if _looks_like_special_key_re.match(k)]
         for key in ignore_keys:
             self.report.append("OBF: ignoring key '%s'" % key)
             del self.data[key]
         
-        # all OBF keys, left justified in the file:
+        # remove keys with illegal OBF characters:
         obf_keys = set(self.data.keys()).difference(set(_SPECIAL))
-        
-        # filter regular keys:
         bad_keys = [k for k in obf_keys if _bad_key_re.search(k)]
+        for key in bad_keys:
+            self.report.append("OBF: ignoring bad key '%s'" % key)
+            del self.data[key]
+        
+        obf_keys = set(self.data.keys()).difference(set(_SPECIAL))
         simple_keys = [k for k in obf_keys if _valid_var_re.match(k)]
-        complex_keys = obf_keys.difference(set(simple_keys)) # gets .units too, bad, refactor
+        other_keys = obf_keys.difference(set(simple_keys)) 
         
         # expand keys for nested loops (list or dict)
-        self.pyc_cache = {}
-        for key in complex_keys:
-            if key in bad_keys:
-                self.report.append("OBF: ignoring key '%s'" % key)
-                del self.data[k]
-                continue
+        self.pyc_cache = {} # command, .pyc
+        self.name_cache = {} # name, bool
+        for key in other_keys: # complex, simple.units
             name, index = key.split('.',1)
             # refactor: move units detection out of complex_key handling
             if index.lower() == _UNITS_LABEL:
@@ -311,18 +321,15 @@ class OBF_Load(dict):
                     del self.data[key]
                 continue
             # parse each sub-item of the complex key: eg: name1.index1+name2.index2+...+nameN.indexN
-            k2 = key # will nibble k2 down to nothing
             name_indices = [] # to contain (name, index) tuples
-            while k2.find('+')>-1:
-                left_end, k2 = k2.split('+',1) # nibble away left-most dimension
-                if left_end.find('.') == -1:
-                    self.report.append("OBF: ERROR: key '%s' is missing a '.'" % key)
-                if _two_dots_re.search(left_end):
-                    self.report.append("OBF: ERROR: key '%s' has too many '.'" % key)
-                # build up list of parts, traverse it later
-                name_indices.append(self._get_name_index(left_end, key))
-            # do the last one:
-            name_indices.append(self._get_name_index(k2, key))
+            for condition in key.split('+'):
+                if condition.find('.') == -1:
+                    self.report.append("OBF: ERROR: mal-formed complex key '%s'" % key)
+                name, index = condition.split('.', 1)
+                if _numeric_re.match(index):
+                    name_indices.append((name, int(index), True))
+                else:
+                    name_indices.append((name, index, False))
             
             # "move" datum to its new place via copy, add, & delete orig:
             datum = copy.deepcopy(self.data[key])
@@ -330,36 +337,22 @@ class OBF_Load(dict):
             del self.data[key]
         
         del self.pyc_cache
-        self.time.append(('end parse keys', time.time()))
-        
-    def _get_name_index(self, left_end, key):
-        """returns a tuple (name, index), after checking that its reasonable
-        
-        used by parse_keys()
-        """
-        name, index = left_end.split('.')
-        if re.match(r"^\d+$", index):
-            # all numeric:
-            index = int(index)
-        elif re.match(r"^\d+[^\d]+", index):
-            # not all numeric but starts with digit:
-            raise AttributeError, "OBF: bad index '%s' in %s" %(index, key)
-        else:
-            index = str(index)
-        return (name, index)
+        del self.name_cache
+        self.time.append(('end parse keys; time %.3f' % (time.time() - t1), time.time()))
     
     def _add_datum(self, name_indices, datum, key):
         '''
         Given a single data point, add it to self.data. The interesting part is to
         grow / expand self.data to accomodate the structure implied by the given
-        (name, index) pairs, which indicate nested lists, dicts, or a combination.
+        (name, index, index_type_int) tuples, which indicate nested lists, dicts,
+        or a combination. index_type_int is bool, to reduce "type(index)" checks.
         
         The request is to place a single data point in a multi-dimensional 
         space. Some of the dimensions may not exist at all yet, so they have
         to be created. The dimensions can be ordered (lists) or unordered (dicts),
         or a mixture. There is no constraint on the number of such dimensions.
         
-        More detail: given a list of (name, index) tuples, convert it into a data 
+        More detail: given a list of (name, index, index_type_int) tuples, convert it into a data 
         structure within self.data, accepting an aribtrary number of reference
         tuples (= dimensions). at each step, the type (list or dict) is inferred
         from the type of its index.
@@ -394,51 +387,49 @@ class OBF_Load(dict):
         # safer in separate cache? easier to debug?
         
         s_data_build_string = 'self.data'
-        while len(name_indices):
-            # NAME is always a key for a dict; INDEX is either an int (if name 
-            # refers to a list) or a str (if name refers to a dict)
-            
-            name, index = name_indices.pop(0) # list of tuples from _get_name_index()
+        
+        for name, index, index_type_int in name_indices:
             if index == 0 and self.base_index == 1:
                 self.report.append("OBF: WARNING: '%s' requested, but index 0 received" % _ONE_INDEXED)
             
             s_data_build_string += "['"+name+"']"
-            if s_data_build_string in self.pyc_cache:
-                # get a reference to the currently end-most list or dict:
+            
+            if s_data_build_string in self.name_cache: # then its existing already
+                # make tmp be a reference to the currently end-most list or dict:
                 cmd = 'tmp='+s_data_build_string
                 if not cmd in self.pyc_cache:
                     self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
                 exec(self.pyc_cache[cmd])
                 
-                # can now assign to tmp to assign to self.data[][]...[][]:
-                if type(index) == int and type(tmp) == list:
+                # now assign to tmp to assign to self.data[][]...[][]:
+                if index_type_int and type(tmp) == list:
                     # lengthen the list as needed:
                     while len(tmp) < index+1:
                         tmp.append(None)
                     if tmp[index] is None:
                         tmp[index] = {}
-                elif type(index) == str and type(tmp) == dict:
+                elif not index_type_int and type(tmp) == dict:
                     # ensure that index is a key of name; init it if its a new key
                     if not index in tmp.keys():
                         tmp[index] = {}
-                else: # mismatched, but specifed in the data source
-                    raise KeyError, "OBF: ERROR: ambiguity in '%s': conflicting explicit key-types, key '%s'" % (self.source, key)
-                
+                else: # mismatch was specifed in the data source
+                    raise KeyError, "OBF: ERROR: fundamental ambiguity in '%s': conflicting key-types, key '%s'" % (self.source, key)
             else: # need a new list or dict
-                self.pyc_cache[s_data_build_string] = s_data_build_string
-                if type(index) == int:
+                self.name_cache[s_data_build_string] = True # set flag for next time
+                if index_type_int:
                     # new empty list, of minimum required length (index):
                     cmd = s_data_build_string+'=[None for i in xrange('+str(index+1)+') ]'
                     if not cmd in self.pyc_cache:
                         self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
                     exec(self.pyc_cache[cmd])
-                    cmd = s_data_build_string+'['+repr(index)+']={}' # always {}, will get next name
+                    
+                    cmd = s_data_build_string+'['+str(index)+']={}' # always {}, will get next name
                     if not cmd in self.pyc_cache:
                         self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
                     exec(self.pyc_cache[cmd])
                 else:
                     # new empty dict referenced by index as a key
-                    cmd = s_data_build_string+'={'+repr(index)+': {}}'
+                    cmd = s_data_build_string+'={"'+index+'": {}}'
                     if not cmd in self.pyc_cache:
                         self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
                     exec(self.pyc_cache[cmd])
