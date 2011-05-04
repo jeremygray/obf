@@ -13,7 +13,7 @@ __version__ = '0.4.00' # of the parser, not OBF
 import yaml
 import copy
 import re
-import time
+import time # just for code profiling
 
 
 # Parser constants:
@@ -70,7 +70,8 @@ _label_dot_units_re = re.compile(r"^([a-zA-Z_][^.]*)\.(.+)$") # captures two gro
 class OBF_Load(dict):
     """Class for parsing a file-like data source consisting of OBF text.
     
-    Parses from a data source having a .readlines() method (opened file, StringIO):
+    Parses text from a data source having a .readlines() method, using yaml.load()
+    plus extra parsing specific to behavioral-data. Result:
     - self.data   <-- data structure
     - self.source <-- repr of data source
     - self.report <-- warning & error messages
@@ -84,14 +85,13 @@ class OBF_Load(dict):
     
     Still needs:
     - better bad-key detection: get errors, but can be cryptic
-    - more checking (only one =Session=, etc)
     - standardize .report[] messages --> warn, quiet, strict
     - provide usage examples
     - provide tests
     
     Someday think about:
     - YAML does not require --- and ...; maybe good to check if they are in source
-      good to require them be written by any function that emits OBF
+      likely useful for multiple data files per text source
     """
     def __init__(self, source, conventions={}, timing=False, units=_UNITS):
         """
@@ -166,19 +166,22 @@ class OBF_Load(dict):
     def initial_checks(self, raw_text):
         '''Perform some basic validations.
         '''
-        key_lines = [(i, line) for i, line in enumerate(raw_text) if not line.startswith(' ')]
+        # filter once:
+        key_lines = [(i, line) for i, line in enumerate(raw_text) if not line[0] in [' ', '#', '-', '.']]
         special_lines = [line for i, line in key_lines if line.startswith('=')]
         
         header = [line for line in special_lines if line.startswith(_HEADER)]
-        if len(header) > 1:
-            raise AttributeError, "OBF: ERROR: can only be one %s section" % _HEADER
-        if len(header) == 0:
-            raise AttributeError, "OBF: ERROR: needs a %s section" % _HEADER
-        
+        if len(header) != 1:
+            raise AttributeError, "OBF: ERROR: must be one %s section" % _HEADER
         session = [line for line in special_lines if line.startswith(_SESSION)]
-        # if...
+        if len(session) != 1:
+            raise AttributeError, "OBF: ERROR: must be one %s section" % _SESSION
         subject = [line for line in special_lines if line.startswith(_SUBJECT) or line.startswith(_PARTICIPANT)]
-        # if...
+        if len(subject) != 1:
+            raise AttributeError, "OBF: ERROR: must be one %s or %s section" % (_SUBJECT, _PARTICIPANT)
+        footer = [line for line in special_lines if line.startswith(_FOOTER) ]
+        if len(footer) == 0:
+            raise AttributeError, "OBF: WARNING: no %s section" % _FOOTER
         
         # avoid cryptic errors from YAML if colon-but-not-whitespace:
         colon_nonwhitespace = [i for i, line in key_lines if _almost_good_key_re.match(line)]
@@ -196,7 +199,7 @@ class OBF_Load(dict):
         # standardize / clean the text in keys:
         _clean_key_re = re.compile(r"^([a-z0-9_][a-z0-9.+, _]*[a-z0-9_])\s*:\s+", re.I)
         for i, line in key_lines:
-            # skip one character keys:
+            # easiest to just skip one character keys:
             if line.replace(' ','').find(':') == 1:
                 continue 
             match = _clean_key_re.match(line) # capture the key, no trailing white space
@@ -205,7 +208,7 @@ class OBF_Load(dict):
             # replace the orig key with a cleaned-up version of itself:
             raw_text[i] = re.sub(r".*:", clean_key+':', raw_text[i]) 
         
-        # do a first yaml conversion to get preprocessing directives:
+        # do a first (and hopefully only) yaml conversion:
         text = '\n'.join(raw_text)
         self.time.append(('start yaml-load',time.time()))
         data0 = yaml.safe_load(text)
@@ -229,7 +232,7 @@ class OBF_Load(dict):
             if _WARN in prepro:
                 self.report.append("OBF: '%s' not implemented yet" % _WARN)
         
-        # do pre-processing; yaml.load() again if things were auto_indexed:
+        # do pre-processing; must yaml.load() again if do auto_index:
         if len(prepro) > 0:
             obf_keys = set(data0.keys()).difference(set(_SPECIAL))
             key_lines = [(i, line) for i, line in enumerate(raw_text) if _good_key_re.match(line)]
@@ -247,9 +250,9 @@ class OBF_Load(dict):
                             raw_text[linenum] = raw_text[linenum].replace(key, key + '.' + str(k + self.base_index))
                 # reload everything, now that lines have been disambiguated
                 text = '\n'.join(raw_text)
-                self.time.append(('start yaml-load #2',time.time()))
+                self.time.append(('start yaml-load #2 auto_index',time.time()))
                 data0 = yaml.safe_load(text)
-                self.time.append(('end yaml-load #2',time.time()))
+                self.time.append(('end yaml-load #2 auto_index',time.time()))
                 obf_keys = set(data0.keys()).difference(set(_SPECIAL))
             if _KEYS_LOWER in prepro:
                 for key in obf_keys:
@@ -287,6 +290,7 @@ class OBF_Load(dict):
         complex_keys = obf_keys.difference(set(simple_keys)) # gets .units too, bad, refactor
         
         # expand keys for nested loops (list or dict)
+        self.pyc_cache = {}
         for key in complex_keys:
             if key in bad_keys:
                 self.report.append("OBF: ignoring key '%s'" % key)
@@ -322,9 +326,10 @@ class OBF_Load(dict):
             
             # "move" datum to its new place via copy, add, & delete orig:
             datum = copy.deepcopy(self.data[key])
-            self._add_datum(name_indices, datum, key)
+            self._add_datum(name_indices, datum, key) # == the slow part
             del self.data[key]
         
+        del self.pyc_cache
         self.time.append(('end parse keys', time.time()))
         
     def _get_name_index(self, left_end, key):
@@ -382,26 +387,30 @@ class OBF_Load(dict):
         Used only by parse_keys()
         '''
         
+        # might be useful: http://lucumr.pocoo.org/2011/2/1/exec-in-python/
+        
+        # to speed up exec, cache compiled bytecode in self.pyc_cache
+        # also cache s_data_build_string (without compile) in self.pyc_cache
+        # safer in separate cache? easier to debug?
+        
         s_data_build_string = 'self.data'
         while len(name_indices):
             # NAME is always a key for a dict; INDEX is either an int (if name 
             # refers to a list) or a str (if name refers to a dict)
+            
             name, index = name_indices.pop(0) # list of tuples from _get_name_index()
             if index == 0 and self.base_index == 1:
                 self.report.append("OBF: WARNING: '%s' requested, but index 0 received" % _ONE_INDEXED)
-            s_data_build_string += '['+repr(name)+']'
-            try:
-                eval(s_data_build_string)
-                is_existing = True
-            except KeyError:
-                is_existing = False
-            except TypeError:
-                raise TypeError, "OBF: ERROR: ambiguity in '%s': conflicting data-types, key '%s'" % (self.source, key)
             
-            if is_existing:
-                # make tmp a reference to the currently end-most list or dict:
-                exec('tmp='+s_data_build_string)
-                # being a reference, we can change tmp to change self.data[][]...[][]:
+            s_data_build_string += "['"+name+"']"
+            if s_data_build_string in self.pyc_cache:
+                # get a reference to the currently end-most list or dict:
+                cmd = 'tmp='+s_data_build_string
+                if not cmd in self.pyc_cache:
+                    self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
+                exec(self.pyc_cache[cmd])
+                
+                # can now assign to tmp to assign to self.data[][]...[][]:
                 if type(index) == int and type(tmp) == list:
                     # lengthen the list as needed:
                     while len(tmp) < index+1:
@@ -412,18 +421,29 @@ class OBF_Load(dict):
                     # ensure that index is a key of name; init it if its a new key
                     if not index in tmp.keys():
                         tmp[index] = {}
-                else: # mismatch, specifed in the data source
-                    raise TypeError, "OBF: ERROR: ambiguity in '%s': conflicting data-types, key" % self.file
+                else: # mismatched, but specifed in the data source
+                    raise KeyError, "OBF: ERROR: ambiguity in '%s': conflicting explicit key-types, key '%s'" % (self.source, key)
                 
             else: # need a new list or dict
+                self.pyc_cache[s_data_build_string] = s_data_build_string
                 if type(index) == int:
                     # new empty list, of minimum required length (index):
-                    exec(s_data_build_string+'=[None for i in range('+str(index+1)+') ]')
-                    exec(s_data_build_string+'['+repr(index)+']={}')
+                    cmd = s_data_build_string+'=[None for i in xrange('+str(index+1)+') ]'
+                    if not cmd in self.pyc_cache:
+                        self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
+                    exec(self.pyc_cache[cmd])
+                    cmd = s_data_build_string+'['+repr(index)+']={}' # always {}, will get next name
+                    if not cmd in self.pyc_cache:
+                        self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
+                    exec(self.pyc_cache[cmd])
                 else:
                     # new empty dict referenced by index as a key
-                    exec(s_data_build_string+'={'+repr(index)+': {}}') 
+                    cmd = s_data_build_string+'={'+repr(index)+': {}}'
+                    if not cmd in self.pyc_cache:
+                        self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
+                    exec(self.pyc_cache[cmd])
             s_data_build_string += '['+repr(index)+']'
+        
         exec(s_data_build_string+'='+repr(datum))
         
     def process_values(self, conventions):
@@ -723,6 +743,7 @@ zzz._1_:
     1111
 
 _1_:1
+
 
 =Footer=:
     exit_status: normal
