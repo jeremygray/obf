@@ -58,14 +58,15 @@ _UNITS = ['ms', 'sec', 'utime', # time: milliseconds, seconds, unix-time (sec)
                ]
 
 # Regular expressions:
-_valid_var_re = re.compile(r"^[a-zA-Z_][\w]*$")  # a string is a legal variable name
-_bad_key_re = re.compile(r"[^a-z0-9.+, _]", re.I)  # non-OBF character (for a key)
-_good_key_re = re.compile(r"^[a-z_][a-z0-9.+,\s_]*:\s+", re.I) # the line contains a good key
-_almost_good_key_re = re.compile(r"^[a-z_][a-z0-9.+,\s_]*:[^\s]+", re.I) # lacks space after colon
-_two_dots_re = re.compile(r".*\..*\.")  # two '.' anywhere
-_looks_like_special_key_re = re.compile(r"^=.+=$")  # string is '=' first and last, with something in between
-_label_dot_units_re = re.compile(r"^([a-zA-Z_][^.]*)\.(.+)$") # captures two groups, label, units
-_numeric_re = re.compile(r"^\d+$")
+_valid_var_re = re.compile(r"^[a-zA-Z_][\w]*$")  # match if a string is a legal variable name
+_bad_key_re = re.compile(r"[^a-z0-9.+, _]", re.I)  # match if any non-OBF character (for a key)
+_good_key_re = re.compile(r"^[a-z_][a-z0-9.+,\s_]*:\s+", re.I) # match if the line contains a good OBF key
+_almost_good_key_re = re.compile(r"^[a-z_][a-z0-9.+,\s_]*:[^\s]+", re.I) # good except lacks space after colon
+_two_dots_re = re.compile(r".*\..*\.")  # match if two '.' anywhere
+_looks_like_special_key_re = re.compile(r"^=.+=$")  # match if string has '=' first and last
+_label_dot_units_re = re.compile(r"^([a-zA-Z_][^.]*)\.(.+)$") # match X.Y captures X and Y
+_numeric_re = re.compile(r"^\d+$") # match if a string is exclusively numeric, so int() will suceed
+
 
 class OBF_Load(dict):
     """Class for parsing a file-like data source consisting of OBF text.
@@ -283,7 +284,7 @@ class OBF_Load(dict):
         """
         inspect & process every key; expand valid keys as dimenions of self.data
         """
-        t1 = time.time()
+        t0 = time.time()
         # treat =key= as comments if not in special keys:
         nonspecial_keys = set(self.data.keys()).difference(set(_SPECIAL))
         ignore_keys = [k for k in nonspecial_keys if _looks_like_special_key_re.match(k)]
@@ -300,59 +301,58 @@ class OBF_Load(dict):
         
         obf_keys = set(self.data.keys()).difference(set(_SPECIAL))
         simple_keys = [k for k in obf_keys if _valid_var_re.match(k)]
-        other_keys = obf_keys.difference(set(simple_keys)) 
+        other_keys = obf_keys.difference(set(simple_keys)) # complex, simple.units
         
-        # expand keys for nested loops (list or dict)
-        self.pyc_cache = {} # command, .pyc
-        self.name_cache = {} # name, bool
-        for key in other_keys: # complex, simple.units
+        # expand complex keys:
+        self.pyc_cache = {} # caches for _add_datum()
+        self.name_cache = {}
+        for key in other_keys:
             name, index = key.split('.',1)
-            # refactor: move units detection out of complex_key handling
-            if index.lower() == _UNITS_LABEL:
+            # handle case where its simple.units, not a complex keys:
+            index_lower = index.lower()
+            if index_lower == _UNITS_LABEL: 
                 continue
             # some obf_keys with a '.' might be key.units, rather than trial.index:
-            if index.lower() in self.units:
+            if index_lower in self.units:
                 if hasattr(self.data, name): 
-                    self.report.append("OBF: ERROR: '%s' has units '%s', but key conflicts with existing key" % (key, index.lower()))
+                    self.report.append("OBF: ERROR: '%s' has units '%s', but conflicts with an existing key" % (key, index.lower()))
                 else:
-                    self.report.append("OBF: NOTE: treating '%s' as %s with units %s" % (key, name, index.lower()))
-                    self.data[name] = copy.deepcopy(self.data[key])
+                    #self.report.append("OBF: NOTE: treating '%s' as %s with units %s" % (key, name, index.lower()))
+                    self.data[name] = self.data[key]
                     self.data[name+'.'+_UNITS_LABEL] = index
                     del self.data[key]
                 continue
-            # parse each sub-item of the complex key: eg: name1.index1+name2.index2+...+nameN.indexN
-            name_indices = [] # to contain (name, index) tuples
-            for condition in key.split('+'):
-                if condition.find('.') == -1:
-                    self.report.append("OBF: ERROR: mal-formed complex key '%s'" % key)
+            # parse each sub-item of the complex key: 
+            name_indices = []
+            for condition in key.split('+'): # name1.index1 +...+ nameN.indexN
                 name, index = condition.split('.', 1)
                 if _numeric_re.match(index):
                     name_indices.append((name, int(index), True))
                 else:
                     name_indices.append((name, index, False))
             
-            # "move" datum to its new place via copy, add, & delete orig:
-            datum = copy.deepcopy(self.data[key])
-            self._add_datum(name_indices, datum, key) # == the slow part
+            # "move" the value (data point) to its new place:
+            value = self.data[key] # seems ok, faster than copy.deepcopy()
+            self._add_datum(name_indices, value, key)
             del self.data[key]
         
         del self.pyc_cache
         del self.name_cache
-        self.time.append(('end parse keys; time %.3f' % (time.time() - t1), time.time()))
+        self.time.append(('end parse keys;   time %.3f' % (time.time() - t0), time.time()))
     
     def _add_datum(self, name_indices, datum, key):
         '''
         Given a single data point, add it to self.data. The interesting part is to
-        grow / expand self.data to accomodate the structure implied by the given
-        (name, index, index_type_int) tuples, which indicate nested lists, dicts,
-        or a combination. index_type_int is bool, to reduce "type(index)" checks.
+        grow / expand self.data to accomodate the structure /implied/ by the given
+        (name, index) tuples, which indicate nested lists, dicts, or combination. 
+        index_is_int is bool, to reduce "type(index)" checks.
         
         The request is to place a single data point in a multi-dimensional 
         space. Some of the dimensions may not exist at all yet, so they have
         to be created. The dimensions can be ordered (lists) or unordered (dicts),
         or a mixture. There is no constraint on the number of such dimensions.
         
-        More detail: given a list of (name, index, index_type_int) tuples, convert it into a data 
+        More detail: given a list of (name, index, index_is_int) tuples, convert it into a data 
         structure within self.data, accepting an aribtrary number of reference
         tuples (= dimensions). at each step, the type (list or dict) is inferred
         from the type of its index.
@@ -373,22 +373,13 @@ class OBF_Load(dict):
         a lower index value that the current item but have not yet been set explicitly.
         These will either get filled in later with a subsequent datum, or will
         just remain None, indicating a missing value.
-        
-        Maybe there's a simpler way to do it, possibly after all items have been 
-        parsed (rather than item by item on the fly, as done here).
-        
-        Used only by parse_keys()
         '''
         
         # might be useful: http://lucumr.pocoo.org/2011/2/1/exec-in-python/
         
-        # to speed up exec, cache compiled bytecode in self.pyc_cache
-        # also cache s_data_build_string (without compile) in self.pyc_cache
-        # safer in separate cache? easier to debug?
-        
         s_data_build_string = 'self.data'
         
-        for name, index, index_type_int in name_indices:
+        for name, index, index_is_int in name_indices:
             if index == 0 and self.base_index == 1:
                 self.report.append("OBF: WARNING: '%s' requested, but index 0 received" % _ONE_INDEXED)
             
@@ -398,41 +389,30 @@ class OBF_Load(dict):
                 # make tmp be a reference to the currently end-most list or dict:
                 cmd = 'tmp='+s_data_build_string
                 if not cmd in self.pyc_cache:
+                    # to speed up exec, cache the compiled bytecode
                     self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
                 exec(self.pyc_cache[cmd])
                 
-                # now assign to tmp to assign to self.data[][]...[][]:
-                if index_type_int and type(tmp) == list:
+                # assigning to tmp => assigning to self.data[][]...[][]:
+                if index_is_int and type(tmp) == list:
                     # lengthen the list as needed:
                     while len(tmp) < index+1:
-                        tmp.append(None)
+                        tmp.append(None) # implied by index, but no value (yet)
                     if tmp[index] is None:
                         tmp[index] = {}
-                elif not index_type_int and type(tmp) == dict:
+                elif not index_is_int and type(tmp) == dict:
                     # ensure that index is a key of name; init it if its a new key
                     if not index in tmp.keys():
                         tmp[index] = {}
                 else: # mismatch was specifed in the data source
                     raise KeyError, "OBF: ERROR: fundamental ambiguity in '%s': conflicting key-types, key '%s'" % (self.source, key)
-            else: # need a new list or dict
+            else: # need a new list or dict; new -> no benefit to cache-ing .pyc
                 self.name_cache[s_data_build_string] = True # set flag for next time
-                if index_type_int:
-                    # new empty list, of minimum required length (index):
-                    cmd = s_data_build_string+'=[None for i in xrange('+str(index+1)+') ]'
-                    if not cmd in self.pyc_cache:
-                        self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
-                    exec(self.pyc_cache[cmd])
-                    
-                    cmd = s_data_build_string+'['+str(index)+']={}' # always {}, will get next name
-                    if not cmd in self.pyc_cache:
-                        self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
-                    exec(self.pyc_cache[cmd])
-                else:
-                    # new empty dict referenced by index as a key
-                    cmd = s_data_build_string+'={"'+index+'": {}}'
-                    if not cmd in self.pyc_cache:
-                        self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
-                    exec(self.pyc_cache[cmd])
+                if index_is_int: # new empty list
+                    exec(s_data_build_string+'=[None for i in xrange('+str(index+1)+') ]')
+                    exec(s_data_build_string+'['+str(index)+']={}') # always {}, will get next name
+                else: # new empty dict
+                    exec(s_data_build_string+'={"'+index+'": {}}')
             s_data_build_string += '['+repr(index)+']'
         
         exec(s_data_build_string+'='+repr(datum))
@@ -442,6 +422,7 @@ class OBF_Load(dict):
         
         Keys can trigger further processing, based on conventions.
         """
+        t0 = time.time()
         hot_keys = conventions.keys() # unordered
         def walk_values(this_level):
             """trigger actions based on hot_keys; "walk" means descend recursively.
@@ -480,7 +461,7 @@ class OBF_Load(dict):
             else:
                 assert False, "OBF: BUG in walk_values(): received a '%s'" % type(this_level)
         walk_values(self.data)
-        self.time.append(('end parse values', time.time()))
+        self.time.append(('end parse values; time %.3f' % (time.time() - t0), time.time()))
 
 class OBF_Dump(object):
     """Class for creating an OBF file-like data source; OBF text -> internal data.
@@ -534,7 +515,7 @@ def _get_default_conventions():
     def convert_digits_as_str(this_dict, this_key, this_obj):
         # convert '_123_' to '123', to allow digits as a str in dict keys
         new_key = this_key.replace('_', '') # leave as str, only digits
-        this_dict[new_key] = copy.deepcopy(this_dict[this_key])
+        this_dict[new_key] = this_dict[this_key] # need deepcopy?
         del this_dict[this_key]
         return {'new_key': new_key}
     def process_units(this_dict, this_key, this_obj):
@@ -547,7 +528,7 @@ def _get_default_conventions():
                 return
             if units.lower() in this_obj.units:
                 units = units.lower()
-            this_dict[new_key] = copy.deepcopy(this_dict[this_key])
+            this_dict[new_key] = this_dict[this_key] # need deepcopy?
             this_dict[new_key+'.'+_UNITS_LABEL] = units
             del this_dict[this_key]
             return {'new_key': new_key}
