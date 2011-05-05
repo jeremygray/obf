@@ -79,6 +79,7 @@ class OBF_Load(dict):
     - self.time   <-- code timing profile
     - self.prepro <-- preprocessing requested
     - self.yaml   <-- yaml parser details
+    - self.units  <-- known units (lower case)
     
     Notes:
     - quote characters seem to mess with YAML parsing. to use '123' (string) 
@@ -304,8 +305,7 @@ class OBF_Load(dict):
         other_keys = obf_keys.difference(set(simple_keys)) # complex, simple.units
         
         # expand complex keys:
-        self.pyc_cache = {} # caches for _add_datum()
-        self.name_cache = {}
+        self.head_name_cache = {} # cache for add_one_value()
         for key in other_keys:
             name, index = key.split('.',1)
             # handle case where its simple.units, not a complex keys:
@@ -315,9 +315,8 @@ class OBF_Load(dict):
             # some obf_keys with a '.' might be key.units, rather than trial.index:
             if index_lower in self.units:
                 if hasattr(self.data, name): 
-                    self.report.append("OBF: ERROR: '%s' has units '%s', but conflicts with an existing key" % (key, index.lower()))
+                    self.report.append("OBF: ERROR: '%s' has units '%s', but conflicts with an existing key" % (key, index_lower))
                 else:
-                    #self.report.append("OBF: NOTE: treating '%s' as %s with units %s" % (key, name, index.lower()))
                     self.data[name] = self.data[key]
                     self.data[name+'.'+_UNITS_LABEL] = index
                     del self.data[key]
@@ -330,11 +329,9 @@ class OBF_Load(dict):
                     name_indices.append((name, int(index), True))
                 else:
                     name_indices.append((name, index, False))
-            
-            self.add_one_value(name_indices, key) # the value is self.data[key]
+            self.add_one_value(name_indices, key) # the value to add is self.data[key]
         
-        del self.pyc_cache
-        del self.name_cache
+        del self.head_name_cache
         self.time.append(('end parse keys;  time %.3f' % (time.time() - t0), time.time()))
     
     def add_one_value(self, name_indices, key):
@@ -361,58 +358,56 @@ class OBF_Load(dict):
             self.data[n][i] [n][i]
             self.data[n][i] [n][i] ... [n][i] = value == self.data[key]
         
-        Implementation: goes list-by-list building up a string (s_data_build_string)
-        to instantiate non-existing but required lists / dicts. after the dimensions 
-        are known to exist or newly created via exec(), finally exec() the build-string,
-        assigning value to it. This places a single value in the data structure.
+        Implementation: go list-by-list keeping a pointer, head, and a string that
+        corresponds to it, head_shadow_str. Use these to traverse, 
+        creating non-existing but required lists / dicts once the dimensions 
+        are known or have been made to exist. Assign the value to the last item. 
+        This places a single value in the data structure.
         
         Implied items are created and set to None, namely list elements that have
         a lower index value that the current item but have not yet been set explicitly.
         These will either get filled in later with a subsequent value, or will
-        just remain None, indicating a missing value.
+        remain None, indicating a missing value (not specified in the data source).
         '''
         
-        # might be useful: http://lucumr.pocoo.org/2011/2/1/exec-in-python/
-        
-        s_data_build_string = 'self.data'
+        head = self.data # head as in pointer / git head; only ever points to a dict
+        head_shadow_str = 'self.data' # string that "shadows" head, as hash
         
         for name, index, index_is_int in name_indices:
             if index == 0 and self.base_index == 1:
                 self.report.append("OBF: WARNING: '%s' requested, but index 0 received" % _ONE_INDEXED)
-            s_data_build_string += "['"+name+"']"
-            if s_data_build_string in self.name_cache: # then its existing already
-                # make head be a reference to the currently end-most list or dict:
-                cmd = 'head='+s_data_build_string
-                if not cmd in self.pyc_cache:
-                    # to speed up exec, cache the compiled bytecode
-                    self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
-                exec(self.pyc_cache[cmd])
+            head_shadow_str += "['"+name+"']"
+            if head_shadow_str in self.head_name_cache: # then head[name] exists
                 # assigning to head => assigning to self.data[][]...[][]:
-                if index_is_int and type(head) == list:
-                    # lengthen the list as needed:
-                    while len(head) < index+1:
-                        head.append(None) # implied by index, but no value (yet)
-                    if head[index] is None:
-                        head[index] = {}
-                elif not index_is_int and type(head) == dict:
+                if index_is_int and type(head[name]) == list:
+                    # lengthen the list if needed:
+                    while len(head[name]) < index+1:
+                        head[name].append(None) # existence is implied by index
+                    # clean end?
+                    if head[name][index] is None:
+                        head[name][index] = {} # next name goes in here
+                    else:
+                        self.report.append("OBF: WARNING: key '%s' repeated in '%s' " % (key, self.source))
+                elif not index_is_int and type(head[name]) == dict:
                     # ensure that index is a key of name; init it if its a new key
-                    if not index in head.keys():
-                        head[index] = {}
+                    if not index in head[name].keys():
+                        head[name][index] = {}
                 else: # mismatch was specifed in the data source
-                    raise KeyError, "OBF: ERROR: fundamental ambiguity in '%s': conflicting key-types, key '%s'" % (self.source, key)
-            else: # need a new list or dict; new -> no benefit to cache-ing .pyc
-                self.name_cache[s_data_build_string] = True # set flag for next time
-                if index_is_int: # new empty list
-                    exec(s_data_build_string+'=[None for i in xrange('+str(index+1)+') ]')
-                    exec(s_data_build_string+'['+str(index)+']={}') # always {}, will get next name
-                else: # new empty dict
-                    exec(s_data_build_string+'={"'+index+'": {}}')
-            last_build_string = s_data_build_string
-            s_data_build_string += '['+repr(index)+']'
+                    raise KeyError, "OBF: ERROR: conflicting key '%s', fundamental ambiguity in '%s'" % (key, self.source)
+            else: # need a new list or dict
+                self.head_name_cache[head_shadow_str] = True # the existence of the key is what matters
+                if index_is_int:
+                    head[name] = [None for i in xrange(index+1)]
+                    head[name][index] = {} # next name goes in here
+                else:
+                    head[name] = {index: {} } # next name goes in the {}
+            # update pointers:
+            last_head = head # only used for the final assignment
+            head = head[name][index] # update
+            head_shadow_str += '['+repr(index)+']'
         
-        #exec(s_data_build_string+'='+repr(value)) # same as but slower than:
-        exec('head='+last_build_string)
-        head[index] = self.data[key] 
+        # assign the value to the end; must be last_head[][]=..., head= ... fails
+        last_head[name][index] = self.data[key]
         
         del self.data[key]
         
@@ -760,5 +755,4 @@ if __name__ == '__main__':
     
     for t in data.time:
         print t
-    
     
