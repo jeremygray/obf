@@ -331,21 +331,18 @@ class OBF_Load(dict):
                 else:
                     name_indices.append((name, index, False))
             
-            # "move" the value (data point) to its new place:
-            value = self.data[key] # seems ok, faster than copy.deepcopy()
-            self._add_datum(name_indices, value, key)
-            del self.data[key]
+            self.add_one_value(name_indices, key) # the value is self.data[key]
         
         del self.pyc_cache
         del self.name_cache
-        self.time.append(('end parse keys;   time %.3f' % (time.time() - t0), time.time()))
+        self.time.append(('end parse keys;  time %.3f' % (time.time() - t0), time.time()))
     
-    def _add_datum(self, name_indices, datum, key):
+    def add_one_value(self, name_indices, key):
         '''
-        Given a single data point, add it to self.data. The interesting part is to
-        grow / expand self.data to accomodate the structure /implied/ by the given
-        (name, index) tuples, which indicate nested lists, dicts, or combination. 
-        index_is_int is bool, to reduce "type(index)" checks.
+        Given a single data point, self.data[key], grow / expand self.data to
+        accomodate the structure /implied/ by the given (name, index) tuples in 
+        name_indices. These indicate nested lists, dicts, or combination. 
+        index_is_int is bool, just to reduce "type(index)" overhead.
         
         The request is to place a single data point in a multi-dimensional 
         space. Some of the dimensions may not exist at all yet, so they have
@@ -359,19 +356,19 @@ class OBF_Load(dict):
         
         Strategy: traverse the existing data structure starting from a known-good
         root, self.data, at each point check for the next dimension, where (name,
-        index) are always pairs):
+        index) are always pairs:
             self.data[n][i]
             self.data[n][i] [n][i]
-            self.data[n][i] [n][i] ... [n][i] = datum
+            self.data[n][i] [n][i] ... [n][i] = value == self.data[key]
         
         Implementation: goes list-by-list building up a string (s_data_build_string)
         to instantiate non-existing but required lists / dicts. after the dimensions 
         are known to exist or newly created via exec(), finally exec() the build-string,
-        assigning datum to it. This places a single value in the data structure.
+        assigning value to it. This places a single value in the data structure.
         
         Implied items are created and set to None, namely list elements that have
         a lower index value that the current item but have not yet been set explicitly.
-        These will either get filled in later with a subsequent datum, or will
+        These will either get filled in later with a subsequent value, or will
         just remain None, indicating a missing value.
         '''
         
@@ -382,28 +379,25 @@ class OBF_Load(dict):
         for name, index, index_is_int in name_indices:
             if index == 0 and self.base_index == 1:
                 self.report.append("OBF: WARNING: '%s' requested, but index 0 received" % _ONE_INDEXED)
-            
             s_data_build_string += "['"+name+"']"
-            
             if s_data_build_string in self.name_cache: # then its existing already
-                # make tmp be a reference to the currently end-most list or dict:
-                cmd = 'tmp='+s_data_build_string
+                # make head be a reference to the currently end-most list or dict:
+                cmd = 'head='+s_data_build_string
                 if not cmd in self.pyc_cache:
                     # to speed up exec, cache the compiled bytecode
                     self.pyc_cache[cmd] = compile(cmd, "<string>", "exec")
                 exec(self.pyc_cache[cmd])
-                
-                # assigning to tmp => assigning to self.data[][]...[][]:
-                if index_is_int and type(tmp) == list:
+                # assigning to head => assigning to self.data[][]...[][]:
+                if index_is_int and type(head) == list:
                     # lengthen the list as needed:
-                    while len(tmp) < index+1:
-                        tmp.append(None) # implied by index, but no value (yet)
-                    if tmp[index] is None:
-                        tmp[index] = {}
-                elif not index_is_int and type(tmp) == dict:
+                    while len(head) < index+1:
+                        head.append(None) # implied by index, but no value (yet)
+                    if head[index] is None:
+                        head[index] = {}
+                elif not index_is_int and type(head) == dict:
                     # ensure that index is a key of name; init it if its a new key
-                    if not index in tmp.keys():
-                        tmp[index] = {}
+                    if not index in head.keys():
+                        head[index] = {}
                 else: # mismatch was specifed in the data source
                     raise KeyError, "OBF: ERROR: fundamental ambiguity in '%s': conflicting key-types, key '%s'" % (self.source, key)
             else: # need a new list or dict; new -> no benefit to cache-ing .pyc
@@ -413,9 +407,14 @@ class OBF_Load(dict):
                     exec(s_data_build_string+'['+str(index)+']={}') # always {}, will get next name
                 else: # new empty dict
                     exec(s_data_build_string+'={"'+index+'": {}}')
+            last_build_string = s_data_build_string
             s_data_build_string += '['+repr(index)+']'
         
-        exec(s_data_build_string+'='+repr(datum))
+        #exec(s_data_build_string+'='+repr(value)) # same as but slower than:
+        exec('head='+last_build_string)
+        head[index] = self.data[key] 
+        
+        del self.data[key]
         
     def process_values(self, conventions):
         """Inspect and process every value, descending recursively.
@@ -461,7 +460,7 @@ class OBF_Load(dict):
             else:
                 assert False, "OBF: BUG in walk_values(): received a '%s'" % type(this_level)
         walk_values(self.data)
-        self.time.append(('end parse values; time %.3f' % (time.time() - t0), time.time()))
+        self.time.append(('end proc values; time %.3f' % (time.time() - t0), time.time()))
 
 class OBF_Dump(object):
     """Class for creating an OBF file-like data source; OBF text -> internal data.
