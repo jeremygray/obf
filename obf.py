@@ -8,7 +8,7 @@
 # parser or emitter; see OBF_spec.txt
 
 
-__version__ = '0.4.00' # of the parser, not OBF
+__version__ = '0.5.00' # of the parser, not OBF
 
 import yaml
 import copy
@@ -506,13 +506,13 @@ def _get_default_conventions():
     - can also update this_dict or this_obj (eg, this_obj.report -> self.report)
     - return ('flag', a_value)
     """
-    def convert_digits_as_str(this_dict, this_key, this_obj):
+    def do_digits_as_str(this_dict, this_key, this_obj):
         # convert '_123_' to '123', to allow digits as a str in dict keys
         new_key = this_key.replace('_', '') # leave as str, only digits
         this_dict[new_key] = this_dict[this_key] # need deepcopy?
         del this_dict[this_key]
         return {'new_key': new_key}
-    def process_units(this_dict, this_key, this_obj):
+    def do_units(this_dict, this_key, this_obj):
         # interpret name.label as a name with units of label
         match = _label_dot_units_re.match(this_key) # captures
         if match:
@@ -528,10 +528,10 @@ def _get_default_conventions():
             return {'new_key': new_key}
         else:
             this_obj.report.append("OBF: WARN: bad units for '%s." % this_key)
-    def screen_random_seed(this_dict, this_key, this_obj):
+    def do_random_seed(this_dict, this_key, this_obj):
         if this_dict[this_key] == 'None':
             this_obj.report.append("OBF: WARNING: ambiguous random_seed 'None'")
-    def screen_mouse(this_dict, this_key, this_obj):
+    def do_mouse(this_dict, this_key, this_obj):
         mouse = this_dict[this_key]
         if type(mouse) == dict:
             if not 'x' in mouse and not 'y' in mouse:
@@ -541,10 +541,11 @@ def _get_default_conventions():
                     this_obj.report.append("OBF: ERROR: mouse lacks (x,y) or pos[]")
     key_action_dict = {
         # regex 'trigger': function_reference,
-        'random_seed': screen_random_seed,
-        'mouse': screen_mouse,
-        r"^_\d+_$": convert_digits_as_str,
-        r"^[a-zA-Z_].*\..+$": process_units
+        # can safely assume no whitespace
+        'random_seed': do_random_seed,
+        'mouse': do_mouse,
+        r"^_\d+_$": do_digits_as_str,
+        r"^[a-zA-Z0-9_].*\..+$": do_units
         #'key': screen_key
         }
     return key_action_dict
